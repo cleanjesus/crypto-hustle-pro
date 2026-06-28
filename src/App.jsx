@@ -20,22 +20,59 @@ function App() {
         }
         fetchAllCoinData().catch(console.error);
     }, []);
+    const [filteredResults, setFilteredResults] = useState([]);
+    const [searchInput, setSearchInput] = useState("");
+    const searchItems = (searchValue) => {
+        setSearchInput(searchValue);
+        if (searchValue !== "") {
+            const filteredData = list.filter(
+                (coin) =>
+                    coin.name
+                        .toLowerCase()
+                        .includes(searchValue.toLowerCase()) ||
+                    coin.symbol
+                        .toLowerCase()
+                        .includes(searchValue.toLowerCase()),
+            );
+            setFilteredResults(filteredData);
+        } else {
+            setFilteredResults(list);
+        }
+    };
 
     return (
         <>
             <div className="whole-page">
                 <h1>My Crypto List</h1>
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    onChange={(inputString) =>
+                        searchItems(inputString.target.value)
+                    }
+                />
                 <ul>
-                    {list?.map((coin) => (
-                        <CoinInfo
-                            key={coin.id}
-                            id={coin.id}
-                            image={coin.image}
-                            name={coin.name}
-                            symbol={coin.symbol}
-                            price={coin.current_price}
-                        />
-                    ))}
+                    {searchInput.length > 0
+                        ? filteredResults.map((coin) => (
+                              <CoinInfo
+                                  key={coin.id}
+                                  id={coin.id}
+                                  image={coin.image}
+                                  name={coin.name}
+                                  symbol={coin.symbol}
+                                  price={coin.current_price}
+                              />
+                          ))
+                        : list?.map((coin) => (
+                              <CoinInfo
+                                  key={coin.id}
+                                  id={coin.id}
+                                  image={coin.image}
+                                  name={coin.name}
+                                  symbol={coin.symbol}
+                                  price={coin.current_price}
+                              />
+                          ))}
                 </ul>
             </div>
         </>
