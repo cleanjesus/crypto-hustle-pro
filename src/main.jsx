@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")).render(
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index element={<App />} />
-                <Route path="/coinDetails/:symbol" element={<DetailView />} />
+                <Route path="/coinDetails/:id" element={<DetailView />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
         </Routes>
